@@ -6,4 +6,4 @@
 Makefile
 Makefile.Debug
 Makefile.Release
-.pro.user
+*.pro.user
