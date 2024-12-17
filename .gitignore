@@ -1,5 +1,6 @@
 /debug
-/build
+/Client/ClientApplication/build
+/Server/ServerApplication/build
 /release
 /.qtc_clangd
 .qmake.stash
