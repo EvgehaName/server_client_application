@@ -1,7 +1,9 @@
-/debug
+/Server/ServerApplication/debug
+/Client/ClientApplication/debug
 /Client/ClientApplication/build
 /Server/ServerApplication/build
-/release
+/Server/ServerApplication/release
+/Client/ClientApplication/release
 /.qtc_clangd
 .qmake.stash
 Makefile
