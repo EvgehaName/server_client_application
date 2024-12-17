@@ -4,6 +4,11 @@
 /Server/ServerApplication/build
 /Server/ServerApplication/release
 /Client/ClientApplication/release
+/Server/ServerApplication/.qtc_clangd
+/Client/ClientApplication/.qtc_clangd
+/debug
+/release
+/build
 /.qtc_clangd
 .qmake.stash
 Makefile
