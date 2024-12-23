@@ -25,7 +25,7 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::disconnectedClient()
 {
     std::cout << "disconnection client" << std::endl;
-    socketClient->disconnected();
+    socketClient->close();
 }
 
 void MainWindow::socketReady()
@@ -48,8 +48,15 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_pushButton_3_clicked()
 {
-    socketClient->write("Hello server");
-    socketClient->waitForBytesWritten(500);
-    socketClient->flush();
+    if(socketClient->state() == QTcpSocket::ConnectedState)
+    {
+        socketClient->write("Hello server");
+        socketClient->waitForBytesWritten(500);
+        socketClient->flush();
+    }
+    else
+    {
+        std::cout << "No connection to server!" << std::endl;
+    }
 }
 

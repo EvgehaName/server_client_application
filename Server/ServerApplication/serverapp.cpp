@@ -17,11 +17,10 @@ void ServerApp::startServerApp()
 void ServerApp::newServerConnection()
 {
     tcpSocket = tcpServer->nextPendingConnection();
-    connect(tcpSocket, SIGNAL(readyRead()), this, SLOT(sockReady()));
-    connect(tcpSocket, SIGNAL(disconnection()), this, SLOT(sockDisconnection()));
-
     tcpSocket->write("Connection Client!");
-    tcpSocket->waitForBytesWritten(500);
+
+    connect(tcpSocket, SIGNAL(readyRead()), this, SLOT(sockReady()));
+    connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(sockDisconnection()));
 
 }
 
@@ -35,5 +34,6 @@ void ServerApp::sockReady()
 void ServerApp::sockDisconnection()
 {
     std::cout << "Disconnected...." << std::endl;
+    tcpSocket->close();
     tcpSocket->deleteLater();
 }
