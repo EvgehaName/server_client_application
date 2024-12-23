@@ -19,12 +19,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    socketClient->connectToHost("127.0.0.1", 5555);
+    socketClient->connectToHost("127.0.0.1", 8888);
 }
 
 void MainWindow::disconnectedClient()
 {
-    socketClient->deleteLater();
+    std::cout << "disconnection client" << std::endl;
+    socketClient->disconnected();
 }
 
 void MainWindow::socketReady()
@@ -40,7 +41,15 @@ void MainWindow::socketReady()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    socketClient->disconnected();
-    //socketClient->deleteLater();
+    std::cout << "disconnection...." << std::endl;
+    socketClient->disconnectFromHost();
+}
+
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    socketClient->write("Hello server");
+    socketClient->waitForBytesWritten(500);
+    socketClient->flush();
 }
 

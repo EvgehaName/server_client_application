@@ -11,18 +11,17 @@ class ServerApp : public QTcpServer
 {
     Q_OBJECT
 public:
-    ServerApp();
-    ~ServerApp();
-
+    void startServerApp();
 private:
-    QTcpServer* server;
-    QTcpSocket* socket;
+    QTcpServer* tcpServer;
+    QTcpSocket* tcpSocket;
+    QByteArray byteData;
 
 
 public slots:
-    virtual void incomingConnection(qintptr discriptor);
+    void newServerConnection();
     void sockReady();
-    void sockDisc();
+    void sockDisconnection();
 };
 
 #endif // SERVERAPP_H

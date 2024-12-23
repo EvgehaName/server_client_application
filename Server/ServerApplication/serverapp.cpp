@@ -1,46 +1,39 @@
 #include "serverapp.h"
 
-ServerApp::ServerApp() {
-    if(this->listen(QHostAddress::Any, 5555))
+void ServerApp::startServerApp()
+{
+    tcpServer = new QTcpServer(this);
+    connect(tcpServer, SIGNAL(newConnection()), this, SLOT(newServerConnection()));
+    if(tcpServer->listen(QHostAddress::Any, 8888))
     {
-        std::cout << "Server open! Listen!" << std::endl;
+        std::cout << "Server start! Listening...." << std::endl;
     }
     else
     {
-        std::cout << "Server error!" << std::endl;
+        std::cout << "No start server!" << std::endl;
     }
 }
 
-ServerApp::~ServerApp()
+void ServerApp::newServerConnection()
 {
-    std::cout << "Server close!" << std::endl;
-    QTimer::singleShot(5000, [this](){
-        socket->disconnected();
-        socket->close();
+    tcpSocket = tcpServer->nextPendingConnection();
+    connect(tcpSocket, SIGNAL(readyRead()), this, SLOT(sockReady()));
+    connect(tcpSocket, SIGNAL(disconnection()), this, SLOT(sockDisconnection()));
 
-        server->disconnect();
-        server->close();
-    });
-}
+    tcpSocket->write("Connection Client!");
+    tcpSocket->waitForBytesWritten(500);
 
-void ServerApp::incomingConnection(qintptr discriptor)
-{
-    socket = new QTcpSocket(this);
-    socket->setSocketDescriptor(discriptor);
-    connect(socket,SIGNAL(readyRead()), this, SLOT(sockReady()));
-    connect(socket, SIGNAL(disconnected()), this, SLOT(sockDisc()));
-    std::cout << "ID: " << discriptor << "Client connection" << std::endl;
-
-    socket->write("I client connection");
 }
 
 void ServerApp::sockReady()
 {
-
+    byteData = tcpSocket->readAll();
+    tcpSocket->waitForBytesWritten(500);
+    std::cout << byteData.toStdString() << std::endl;
 }
 
-void ServerApp::sockDisc()
+void ServerApp::sockDisconnection()
 {
     std::cout << "Disconnected...." << std::endl;
-    socket->deleteLater();
+    tcpSocket->deleteLater();
 }
