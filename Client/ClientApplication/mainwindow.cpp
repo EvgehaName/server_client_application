@@ -6,6 +6,20 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ipAddress = ui->lineEdit_IP;
+    portAddress = ui->lineEdit_Port;
+    configCheckSave = ui->checkBox_Config;
+    mainAppWidget = ui->widgetMainApp;
+    enterAppWidget = ui->widgetEnterApp;
+    editTextAntenna = ui->lineEdit_AntennaEnter;
+    editTextRadiation = ui->lineEdit_RadiationEnter;
+
+    ui->pushButton_CheckBox->setTextToggle("Антенна включена", "Антенна выключена");
+
+    mainAppWidget->setVisible(false);
+
+    ConfigReadApp();
+
     socketClient = new QTcpSocket(this);
 
     connect(socketClient, SIGNAL(readyRead()), this, SLOT(socketReady()));
@@ -17,10 +31,51 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::ConfigReadApp()
 {
-    socketClient->connectToHost("127.0.0.1", 8888);
+    std::cout << "init config read" << std::endl;
+    if(std::filesystem::exists("configApp.ini"))
+    {
+        std::cout << "init config read" << std::endl;
+        QSettings configApp(nameConfig, QSettings::IniFormat);
+
+        configApp.beginGroup("IP_Configuration");
+        ipAddress->setText(configApp.value("IP_Address", "").toString());
+        portAddress->setText(configApp.value("Port_Address", "").toString());
+        configApp.endGroup();
+    }
 }
+
+void MainWindow::ConfigWriteApp()
+{
+    std::cout << "init config write" << std::endl;
+    if(ipAddress->text() != nullptr && portAddress->text() != nullptr || ipAddress->text() != "" && portAddress->text() != "")
+    {
+        std::cout << "init config write" << std::endl;
+        QSettings configApp(nameConfig, QSettings::IniFormat);
+
+        configApp.beginGroup("IP_Configuration");
+        configApp.setValue("IP_Address", ipAddress->text());
+        configApp.setValue("Port_Address", portAddress->text());
+        configApp.endGroup();
+    }
+}
+
+void MainWindow::SendToServerData(const char* data)
+{
+    if(socketClient->state() == QTcpSocket::ConnectedState)
+    {
+        socketClient->write(data);
+        socketClient->waitForBytesWritten(500);
+        socketClient->flush();
+    }
+    else
+    {
+        std::cout << "No connection to server!" << std::endl;
+    }
+}
+
+
 
 void MainWindow::disconnectedClient()
 {
@@ -39,24 +94,74 @@ void MainWindow::socketReady()
 }
 
 
-void MainWindow::on_pushButton_2_clicked()
+// void MainWindow::on_pushButton_2_clicked()
+// {
+//     std::cout << "disconnection...." << std::endl;
+//     socketClient->disconnectFromHost();
+// }
+
+
+// void MainWindow::on_pushButton_3_clicked()
+// {
+//     // if(socketClient->state() == QTcpSocket::ConnectedState)
+//     // {
+//     //     socketClient->write("Hello server");
+//     //     socketClient->waitForBytesWritten(500);
+//     //     socketClient->flush();
+//     // }
+//     // else
+//     // {
+//     //     std::cout << "No connection to server!" << std::endl;
+//     // }
+// }
+
+
+void MainWindow::on_pushButton_Enter_clicked()
 {
-    std::cout << "disconnection...." << std::endl;
-    socketClient->disconnectFromHost();
+    if(configCheckSave->isChecked() == true)
+    {
+        ConfigWriteApp();
+    }
+    socketClient->connectToHost(ipAddress->text(), portAddress->text().toInt());
+    if(socketClient->state() == QTcpSocket::ConnectingState)
+    {
+        mainAppWidget->setVisible(true);
+        enterAppWidget->setVisible(false);
+    }
 }
 
 
-void MainWindow::on_pushButton_3_clicked()
+void MainWindow::on_pushButton_CheckBox_toggled(bool checked)
 {
-    if(socketClient->state() == QTcpSocket::ConnectedState)
+    if(checked == true)
     {
-        socketClient->write("Hello server");
-        socketClient->waitForBytesWritten(500);
-        socketClient->flush();
+        std::cout << checked << std::endl;
+        SendToServerData("On RLC");
     }
     else
     {
-        std::cout << "No connection to server!" << std::endl;
+        std::cout << checked << std::endl;
+        SendToServerData("Off RLC");
     }
+}
+
+
+void MainWindow::on_pushButton_Antenna_clicked()
+{
+    SendToServerData(editTextAntenna->text().toStdString().c_str());
+}
+
+
+void MainWindow::on_pushButton_Radiation_clicked()
+{
+    SendToServerData(editTextRadiation->text().toStdString().c_str());
+}
+
+
+void MainWindow::on_pushButton_Disconnected_clicked()
+{
+    disconnectedClient();
+    mainAppWidget->setVisible(false);
+    enterAppWidget->setVisible(true);
 }
 

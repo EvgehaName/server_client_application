@@ -16,6 +16,7 @@ private:
     QTcpServer* tcpServer;
     QTcpSocket* tcpSocket;
     QByteArray byteData;
+    QHostAddress address;
 
 
 public slots:
