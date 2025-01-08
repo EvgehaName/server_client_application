@@ -28,6 +28,9 @@ void ServerApp::sockReady()
 {
     byteData = tcpSocket->readAll();
     tcpSocket->waitForBytesWritten(500);
+    std::vector<std::string> arrayData = splitElem(byteData.toStdString());
+    std::cout << "Check: " << arrayData[0] << " " << arrayData[1] << std::endl;
+    writeLogData(arrayData[1], arrayData[0]);
     std::cout << byteData.toStdString() << std::endl;
 }
 
@@ -37,3 +40,32 @@ void ServerApp::sockDisconnection()
     tcpSocket->close();
     tcpSocket->deleteLater();
 }
+
+void ServerApp::writeLogData(std::string data, std::string flag)
+{
+    QSettings configServer("configRLC.ini", QSettings::IniFormat);
+    configServer.beginGroup("Config RLC");
+    configServer.setValue(flag.c_str(), data.c_str());
+    configServer.endGroup();
+}
+
+// void ServerApp::readLogData()
+// {
+
+// }
+
+std::vector<std::string> ServerApp::splitElem(std::string elem)
+{
+    std::string array;
+    std::vector<std::string> vector_array;
+    std::stringstream elemData(elem);
+    while (getline(elemData, array, ' ')) {
+        vector_array.push_back(array);
+    }
+    return vector_array;
+}
+
+// void ServerApp::checkFlags(QString flag)
+// {
+//     if(flag == "")
+// }

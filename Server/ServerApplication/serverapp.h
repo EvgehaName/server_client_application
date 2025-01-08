@@ -6,6 +6,8 @@
 #include <QTcpSocket>
 #include <QTimer>
 #include <QCoreApplication>
+#include <QSettings>
+#include <sstream>
 
 class ServerApp : public QTcpServer
 {
@@ -23,6 +25,9 @@ public slots:
     void newServerConnection();
     void sockReady();
     void sockDisconnection();
+    void writeLogData(std::string data, std::string flag);
+    //void readLogData();
+    std::vector<std::string> splitElem(std::string elem);
 };
 
 #endif // SERVERAPP_H

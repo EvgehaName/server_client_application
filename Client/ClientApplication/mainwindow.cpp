@@ -136,25 +136,28 @@ void MainWindow::on_pushButton_CheckBox_toggled(bool checked)
     if(checked == true)
     {
         std::cout << checked << std::endl;
-        SendToServerData("On RLC");
+        //std::string data = "ValueTrigger " + "On RLC";
+        SendToServerData((std::string("ValueTrigger ") + "On RLC").c_str());
     }
     else
     {
         std::cout << checked << std::endl;
-        SendToServerData("Off RLC");
+        //std::string data = "ValueTrigger " + "Off RLC";
+        SendToServerData((std::string("ValueTrigger ") + "Off RLC").c_str());
     }
 }
 
 
 void MainWindow::on_pushButton_Antenna_clicked()
 {
-    SendToServerData(editTextAntenna->text().toStdString().c_str());
+    std::cout << (std::string("ValueAntenna ") + editTextAntenna->text().toStdString()).c_str() << std::endl;
+    SendToServerData((std::string("ValueAntenna ") + editTextAntenna->text().toStdString()).c_str());
 }
 
 
 void MainWindow::on_pushButton_Radiation_clicked()
 {
-    SendToServerData(editTextRadiation->text().toStdString().c_str());
+    SendToServerData((std::string("ValueRadiation ") + editTextRadiation->text().toStdString().c_str()).c_str());
 }
 
 
