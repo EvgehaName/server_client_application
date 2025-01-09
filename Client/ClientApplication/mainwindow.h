@@ -9,9 +9,11 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QTToggleButton.h>
+#include <QThread>
 
 #include <iostream>
 #include <filesystem>
+#include <vector>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -42,12 +44,15 @@ private:
     void ConfigWriteApp();
     void SendToServerData(const char* data);
     QString nameConfig = "configApp.ini";
-
+    std::vector<std::string> splitElem(std::string elem);
+    QString valueAntenna;
+    QString valueRadiation;
+    QString valueTrigger;
 
 
 public slots:
     void disconnectedClient();
-    void socketReady();
+    void sockReady();
 
 private slots:
     void on_pushButton_Enter_clicked();

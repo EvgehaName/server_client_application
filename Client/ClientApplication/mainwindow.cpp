@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     socketClient = new QTcpSocket(this);
 
-    connect(socketClient, SIGNAL(readyRead()), this, SLOT(socketReady()));
+    connect(socketClient, SIGNAL(readyRead()), this, SLOT(sockReady()));
     connect(socketClient, SIGNAL(disconnected()), this, SLOT(disconnectedClient()));
 }
 
@@ -83,16 +83,37 @@ void MainWindow::disconnectedClient()
     socketClient->close();
 }
 
-void MainWindow::socketReady()
+void MainWindow::sockReady()
 {
-    if(socketClient->waitForConnected(500))
+    socketClient->waitForReadyRead(1000);
+    Data = socketClient->readAll();
+    std::vector<std::string> data = splitElem(Data.toStdString());
+    valueAntenna = data[0].c_str();
+    valueRadiation = data[1].c_str();
+    valueTrigger = data[2].c_str();
+    editTextAntenna->setText(valueAntenna);
+    editTextRadiation->setText(valueRadiation);
+    if(valueTrigger == "On")
     {
-        socketClient->waitForReadyRead(500);
-        Data = socketClient->readAll();
-        std::cout << Data.toStdString() << std::endl;
+        ui->pushButton_CheckBox->setCheck(true);
     }
+    else
+    {
+        ui->pushButton_CheckBox->setCheck(false);
+    }
+    std::cout << Data.toStdString() << std::endl;
 }
 
+std::vector<std::string> MainWindow::splitElem(std::string elem)
+{
+    std::string array;
+    std::vector<std::string> vector_array;
+    std::stringstream elemData(elem);
+    while (getline(elemData, array, ' ')) {
+        vector_array.push_back(array);
+    }
+    return vector_array;
+}
 
 // void MainWindow::on_pushButton_2_clicked()
 // {

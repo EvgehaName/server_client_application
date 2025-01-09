@@ -11,6 +11,7 @@ public:
     QTToggleButton(QWidget* parent = nullptr);
     void setTextToggle(QString textOnToggle, QString textOffToggle);
     void setPixmapToggle(QString pathPixmapOn, QString pathPixmapOff);
+    void setCheck(bool cheked);
 
 protected:
     virtual void mousePressEvent(QMouseEvent* event);

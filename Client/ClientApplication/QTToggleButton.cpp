@@ -30,6 +30,24 @@ void QTToggleButton::setPixmapToggle(QString pathPixmapOn, QString pathPixmapOff
     loadPixmap();
 }
 
+void QTToggleButton::setCheck(bool cheked)
+{
+    if(QAbstractButton::isChecked() == false)
+    {
+        QAbstractButton::setText(this->textOnButton);
+        iconsOn->setEnabled(true);
+        iconsOff->setEnabled(false);
+        QAbstractButton::setChecked(true);
+    }
+    else
+    {
+        QAbstractButton::setText(this->textOffButton);
+        iconsOn->setEnabled(false);
+        iconsOff->setEnabled(true);
+        QAbstractButton::setChecked(false);
+    }
+}
+
 void QTToggleButton::mousePressEvent(QMouseEvent *event)
 {
     QAbstractButton::mousePressEvent(event);
