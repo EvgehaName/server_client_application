@@ -18,7 +18,7 @@ This project is a pet project! It was designed to explore and understand the QTc
 ## An example of how a software product works
 
 1. The main window of the client side for logging into the control of the radar system
-[!Main Screen Shot Client App][screenshot_client_app]]
+[![Main Screen Shot Client App][screenshot_client_app]]
 
 2. The main menu is to control the radar system (after connecting). After connection, the server sends data to the client to receive data from the radar system.
 [![Main Control Screen Shot Client App][screenshot_server_app_readyConfig]]
