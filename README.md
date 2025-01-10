@@ -39,7 +39,8 @@ This project is a pet project! It was designed to explore and understand the QTc
 
 ## Project build
 
-**To compile the project, the installed QT components are required.**It will be possible to compile the project on all systems where QT is supported, but the compilation example (which is presented below) will take place on the Linux operating system.
+**To compile the project, the installed QT components are required.** 
+It will be possible to compile the project on all systems where QT is supported, but the compilation example (which is presented below) will take place on the Linux operating system.
 
 Compilations:
 1. Clone the project from the repository
