@@ -13,6 +13,8 @@ This project is a pet project! It was designed to explore and understand the QTc
 
 * Learning and understanding the QTcpServer and QTcpSocket objects;
 * Working with configuration files using the QSettings object;
+* Connecting and using external custom widgets;
+* Working with QT resources;
 * Practical application of QT and C++.
 
 ## An example of how a software product works
@@ -34,3 +36,26 @@ This project is a pet project! It was designed to explore and understand the QTc
 
 6. Server configuration file
 [![Configuration file server][screenshot_config_server]]
+
+## Project build
+
+**To compile the project, the installed QT components are required.**It will be possible to compile the project on all systems where QT is supported, but the compilation example (which is presented below) will take place on the Linux operating system.
+
+Compilations:
+1. Clone the project from the repository
+```sh
+   git clone https://github.com/EvgehaName/server_client_application.git
+   ```
+2. Go to the root of each software and compile the project using the make utility.
+```sh
+   make
+   ```
+If there is no makefile, configure the makefile using qmake (the project uses QT 5.15)
+**An example is provided from the Fedora distribution:**
+```sh
+   qmake-qt5
+   ```
+**The qmake call may differ depending on which distribution is being compiled on.**
+
+After successful compilation, you can run the executable file.
+**Attention! You should start the Server using the terminal.**

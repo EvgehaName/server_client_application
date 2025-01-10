@@ -67,14 +67,14 @@ void QTToggleButton::mousePressEvent(QMouseEvent *event)
 
 void QTToggleButton::loadPixmap()
 {
-    QPixmap pixmapToggleOn(pathPixampToggleOn == nullptr ?  "imgs/green.png" : pathPixampToggleOn);
+    QPixmap pixmapToggleOn(pathPixampToggleOn == nullptr ?  ":resources/images/green.png" : pathPixampToggleOn);
     iconsOn->setPixmap(pixmapToggleOn);
     iconsOn->setGeometry(15,15,30,30);
     iconsOn->setMaximumSize(30,30);
     iconsOn->setScaledContents(true);
     iconsOn->setEnabled(false);
 
-    QPixmap pixampToggleOff(pathPixampToggleOff == nullptr ?  "imgs/red.png" : pathPixampToggleOff);
+    QPixmap pixampToggleOff(pathPixampToggleOff == nullptr ?  ":resources/images/red.png" : pathPixampToggleOff);
     iconsOff->setPixmap(pixampToggleOff);
     iconsOff->setGeometry(15,15,30,30);
     iconsOff->setMaximumSize(30,30);
